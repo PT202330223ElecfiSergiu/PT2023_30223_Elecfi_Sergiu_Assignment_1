@@ -1,12 +1,9 @@
-package org.example;
-
+package Interfata;
 
 import java.util.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,17 +33,15 @@ public class Ecran {
     JLabel grupa = new JLabel();
     JLabel reguli = new JLabel();
     JLabel regula1 = new JLabel();
-    JLabel regula2 = new JLabel();
-    JLabel regula3 = new JLabel();
 
     JPanel panel = new JPanel();
 
     String p1;
     String p2;
 
-    Map<Integer, Integer> poli1 = new HashMap<>();
-    Map<Integer, Integer> poli2= new HashMap<>();
-    Map<Integer, Integer> poli3 = new HashMap<>();
+    Map<Integer, Float> poli1 = new HashMap<>();
+    Map<Integer, Float> poli2= new HashMap<>();
+    Map<Integer, Float> poli3 = new HashMap<>();
 
     Operatii op = new Operatii();
 
@@ -106,19 +101,9 @@ public class Ecran {
             poli1 = op.conversion(p1);
             poli2 = op.conversion(p2);
             poli3 = op.adunare(poli1, poli2);
-            System.out.println(poli3);
-            SortedMap<Integer, Integer> reversedMap = new TreeMap<>(Collections.reverseOrder());
+            SortedMap<Integer, Float> reversedMap = new TreeMap<>(Collections.reverseOrder());
             reversedMap.putAll(poli3);
-            String x = "";
-            for (Map.Entry<Integer, Integer> term : reversedMap.entrySet()) {
-                int power = term.getKey();
-                int coef = term.getValue();
-                Polinom polinom1 = new Polinom(power,coef);
-                if(x == "")
-                    x = polinom1.toString();
-                else
-                    x = x + " + " + polinom1.toString();
-            }
+            String x = op.afisarePolinom(reversedMap);
             rezultat.setText(x);
         });
         panel.add(adunare);
@@ -133,19 +118,9 @@ public class Ecran {
             poli1 = op.conversion(p1);
             poli2 = op.conversion(p2);
             poli3 = op.scadere(poli1, poli2);
-            System.out.println(poli3);
-            SortedMap<Integer, Integer> reversedMap = new TreeMap<>(Collections.reverseOrder());
+            SortedMap<Integer, Float> reversedMap = new TreeMap<>(Collections.reverseOrder());
             reversedMap.putAll(poli3);
-            String x = "";
-            for (Map.Entry<Integer, Integer> term : reversedMap.entrySet()) {
-                int power = term.getKey();
-                int coef = term.getValue();
-                Polinom polinom1 = new Polinom(power,coef);
-                if(x == "")
-                    x = polinom1.toString();
-                else
-                    x = x + " + " + polinom1.toString();
-            }
+            String x = op.afisarePolinom(reversedMap);
             rezultat.setText(x);
         });
         panel.add(scadere);
@@ -160,19 +135,9 @@ public class Ecran {
             poli1 = op.conversion(p1);
             poli2 = op.conversion(p2);
             poli3 = op.inmultire(poli1, poli2);
-            System.out.println(poli3);
-            SortedMap<Integer, Integer> reversedMap = new TreeMap<>(Collections.reverseOrder());
+            SortedMap<Integer, Float> reversedMap = new TreeMap<>(Collections.reverseOrder());
             reversedMap.putAll(poli3);
-            String x = "";
-            for (Map.Entry<Integer, Integer> term : reversedMap.entrySet()) {
-                int power = term.getKey();
-                int coef = term.getValue();
-                Polinom polinom1 = new Polinom(power,coef);
-                if(x == "")
-                    x = polinom1.toString();
-                else
-                    x = x + " + " + polinom1.toString();
-            }
+            String x = op.afisarePolinom(reversedMap);
             rezultat.setText(x);
         });
         panel.add(inmultire);
@@ -201,23 +166,12 @@ public class Ecran {
         reguli.setFont(new Font("times new roman", Font.ITALIC,30));
         panel.add(reguli);
 
-        regula1.setBounds(50,550,300,30);
-        regula1.setText("1.Spatiu dupa si inainte de +");
+        regula1.setBounds(50,550,350,30);
+        regula1.setText("1.Fara spatii la scrierea polinoamelor!");
         regula1.setBackground(new Color(224,176,255));
         regula1.setFont(new Font("times new roman", Font.ITALIC,20));
         panel.add(regula1);
 
-        regula2.setBounds(50,590,300,30);
-        regula2.setText("2.Coeficientul 1 trebuie pus");
-        regula2.setBackground(new Color(224,176,255));
-        regula2.setFont(new Font("times new roman", Font.ITALIC,20));
-        panel.add(regula2);
-
-        regula3.setBounds(50,630,400,30);
-        regula3.setText("3.Trebuie pus + chiar daca coeficientul este cu -");
-        regula3.setBackground(new Color(224,176,255));
-        regula3.setFont(new Font("times new roman", Font.ITALIC,20));
-        panel.add(regula3);
     }
 
     public void textArea() {
@@ -244,6 +198,7 @@ public class Ecran {
 
     }
 
-
 }
+
+
 
