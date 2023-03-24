@@ -1,5 +1,7 @@
 package org.example;
 
+
+import java.util.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -13,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class Ecran implements ActionListener {
+public class Ecran {
     JFrame frame = new JFrame("Calculator de polinoame");
     JButton adunare = new JButton();
     JButton scadere = new JButton();
@@ -32,11 +34,21 @@ public class Ecran implements ActionListener {
     JLabel titlu = new JLabel();
     JLabel nume = new JLabel();
     JLabel grupa = new JLabel();
+    JLabel reguli = new JLabel();
+    JLabel regula1 = new JLabel();
+    JLabel regula2 = new JLabel();
+    JLabel regula3 = new JLabel();
 
     JPanel panel = new JPanel();
 
-    //declaratii pentru polinom
+    String p1;
+    String p2;
 
+    Map<Integer, Integer> poli1 = new HashMap<>();
+    Map<Integer, Integer> poli2= new HashMap<>();
+    Map<Integer, Integer> poli3 = new HashMap<>();
+
+    Operatii op = new Operatii();
 
     public void labels() {
         polinom1.setBounds(40, 150, 200, 30);
@@ -88,18 +100,81 @@ public class Ecran implements ActionListener {
         adunare.setText("Adunare polinoame");
         adunare.setBackground(new Color(224,176,255));
         adunare.setFont(new Font("times new roman", Font.ITALIC,20));
+        adunare.addActionListener(e->{
+            p1 = chenar1.getText();
+            p2 = chenar2.getText();
+            poli1 = op.conversion(p1);
+            poli2 = op.conversion(p2);
+            poli3 = op.adunare(poli1, poli2);
+            System.out.println(poli3);
+            SortedMap<Integer, Integer> reversedMap = new TreeMap<>(Collections.reverseOrder());
+            reversedMap.putAll(poli3);
+            String x = "";
+            for (Map.Entry<Integer, Integer> term : reversedMap.entrySet()) {
+                int power = term.getKey();
+                int coef = term.getValue();
+                Polinom polinom1 = new Polinom(power,coef);
+                if(x == "")
+                    x = polinom1.toString();
+                else
+                    x = x + " + " + polinom1.toString();
+            }
+            rezultat.setText(x);
+        });
         panel.add(adunare);
 
         scadere.setBounds(270,250,200,50);
         scadere.setText("Scadere polinoame");
         scadere.setBackground(new Color(224,176,255));
         scadere.setFont(new Font("times new roman", Font.ITALIC,20));
+        scadere.addActionListener(e->{
+            p1 = chenar1.getText();
+            p2 = chenar2.getText();
+            poli1 = op.conversion(p1);
+            poli2 = op.conversion(p2);
+            poli3 = op.scadere(poli1, poli2);
+            System.out.println(poli3);
+            SortedMap<Integer, Integer> reversedMap = new TreeMap<>(Collections.reverseOrder());
+            reversedMap.putAll(poli3);
+            String x = "";
+            for (Map.Entry<Integer, Integer> term : reversedMap.entrySet()) {
+                int power = term.getKey();
+                int coef = term.getValue();
+                Polinom polinom1 = new Polinom(power,coef);
+                if(x == "")
+                    x = polinom1.toString();
+                else
+                    x = x + " + " + polinom1.toString();
+            }
+            rezultat.setText(x);
+        });
         panel.add(scadere);
 
         inmultire.setBounds(490,250,220,50);
         inmultire.setText("Inmultire polinoame");
         inmultire.setBackground(new Color(224,176,255));
         inmultire.setFont(new Font("times new roman", Font.ITALIC,20));
+        inmultire.addActionListener(e->{
+            p1 = chenar1.getText();
+            p2 = chenar2.getText();
+            poli1 = op.conversion(p1);
+            poli2 = op.conversion(p2);
+            poli3 = op.inmultire(poli1, poli2);
+            System.out.println(poli3);
+            SortedMap<Integer, Integer> reversedMap = new TreeMap<>(Collections.reverseOrder());
+            reversedMap.putAll(poli3);
+            String x = "";
+            for (Map.Entry<Integer, Integer> term : reversedMap.entrySet()) {
+                int power = term.getKey();
+                int coef = term.getValue();
+                Polinom polinom1 = new Polinom(power,coef);
+                if(x == "")
+                    x = polinom1.toString();
+                else
+                    x = x + " + " + polinom1.toString();
+            }
+            rezultat.setText(x);
+        });
         panel.add(inmultire);
 
         impartire.setBounds(490,320,220,50);
@@ -119,17 +194,40 @@ public class Ecran implements ActionListener {
         derivare.setBackground(new Color(224,176,255));
         derivare.setFont(new Font("times new roman", Font.ITALIC,20));
         panel.add(derivare);
+
+        reguli.setBounds(50,500,200,50);
+        reguli.setText("Reguli!!");
+        reguli.setBackground(new Color(224,176,255));
+        reguli.setFont(new Font("times new roman", Font.ITALIC,30));
+        panel.add(reguli);
+
+        regula1.setBounds(50,550,300,30);
+        regula1.setText("1.Spatiu dupa si inainte de +");
+        regula1.setBackground(new Color(224,176,255));
+        regula1.setFont(new Font("times new roman", Font.ITALIC,20));
+        panel.add(regula1);
+
+        regula2.setBounds(50,590,300,30);
+        regula2.setText("2.Coeficientul 1 trebuie pus");
+        regula2.setBackground(new Color(224,176,255));
+        regula2.setFont(new Font("times new roman", Font.ITALIC,20));
+        panel.add(regula2);
+
+        regula3.setBounds(50,630,400,30);
+        regula3.setText("3.Trebuie pus + chiar daca coeficientul este cu -");
+        regula3.setBackground(new Color(224,176,255));
+        regula3.setFont(new Font("times new roman", Font.ITALIC,20));
+        panel.add(regula3);
     }
 
     public void textArea() {
-        rezultat.setBounds(50,400,660,100);
+        rezultat.setBounds(50,400,660,40);
         rezultat.setText("Rezultatul va aparea aici");
         rezultat.setFont(new Font("times new roman", Font.ITALIC,25));
         panel.add(rezultat);
     }
 
     public Ecran() {
-        frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800,800);
 
@@ -142,11 +240,10 @@ public class Ecran implements ActionListener {
         butoane();
         textArea();
         frame.add(panel);
+        frame.setVisible(true);
 
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
 
-    }
 }
+

@@ -2,38 +2,38 @@ package org.example;
 
 public class Polinom {
 
-    public int exponent;
-    public int coeficient;
+    public float exponent;
+    public float coeficient;
 
-    public Polinom(int exponent, int coeficient){
+    public Polinom(float exponent, float coeficient){
         this.exponent = exponent;
         this.coeficient = coeficient;
     }
 
-    public void setExponent(int exponent) {
+    public void setExponent(float exponent) {
         this.exponent = exponent;
     }
 
-    public void setCoeficient(int coeficient){
+    public void setCoeficient(float coeficient){
         this.coeficient = coeficient;
     }
 
-    public int getExponent(){
+    public float getExponent(){
         return this.exponent;
     }
 
-    public int getCoeficient(){
+    public float getCoeficient(){
         return this.coeficient;
     }
 
     public String toString(){
         String x;
-        switch (exponent){ //verificam daca puterea lui x
+        switch ((int) exponent){ //verificam daca puterea lui x
             case 0: //in cazul in care puterea este 0
                 x = String.valueOf(coeficient);
                 return x;
             case 1: //in cazul in care puterea este 1
-                switch (coeficient){//verificam coeficientul, daca este 1 sau -1 nu mai scrie 1 in fata la x
+                switch ((int) coeficient){//verificam coeficientul, daca este 1 sau -1 nu mai scrie 1 in fata la x
                     case 1:
                         x = "x";
                         return x;
@@ -45,7 +45,7 @@ public class Polinom {
                         return x;
                 }
             default: //in cazul in care x > 1
-                switch(coeficient) {
+                switch((int) coeficient) {
                     case 1:
                         x = "x^" + String.valueOf(exponent);
                         return x;
