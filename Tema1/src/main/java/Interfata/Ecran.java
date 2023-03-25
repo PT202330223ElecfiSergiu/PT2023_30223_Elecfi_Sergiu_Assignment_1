@@ -1,10 +1,9 @@
 package Interfata;
-
+import Operatii.Operatii;
 import java.util.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -158,6 +157,15 @@ public class Ecran {
         derivare.setText("Derivare polinom");
         derivare.setBackground(new Color(224,176,255));
         derivare.setFont(new Font("times new roman", Font.ITALIC,20));
+        derivare.addActionListener(e->{
+            p1 = chenar1.getText();
+            poli1 = op.conversion(p1);
+            poli3 = op.derivare(poli1);
+            SortedMap<Integer, Float> reversedMap = new TreeMap<>(Collections.reverseOrder());
+            reversedMap.putAll(poli3);
+            String x = op.afisarePolinom(reversedMap);
+            rezultat.setText(x);
+        });
         panel.add(derivare);
 
         reguli.setBounds(50,500,200,50);

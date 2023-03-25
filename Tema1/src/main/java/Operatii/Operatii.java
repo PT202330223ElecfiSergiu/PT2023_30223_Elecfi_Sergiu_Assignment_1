@@ -1,5 +1,5 @@
 package Operatii;
-
+import Polinom.Polinom;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -124,6 +124,19 @@ public class Operatii {
             }
         }
         return produs;
+    }
+
+    public Map<Integer, Float> derivare(Map<Integer, Float> aux){
+        Map<Integer, Float> derivata = new HashMap<>();
+        for(Entry<Integer, Float> a: aux.entrySet()) {
+            if(a.getKey() != 0)
+            {
+                int exp = a.getKey();
+                float coef = a.getValue() * exp;
+                derivata.put(exp - 1, coef);
+            }
+        }
+        return derivata;
     }
 
     public String afisarePolinom(SortedMap<Integer, Float> aux) {
