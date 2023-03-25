@@ -70,6 +70,18 @@ public class Ecran {
         grupa.setBackground(new Color(0,225,225));
         grupa.setFont(new Font("times new roman", Font.ITALIC,20));
 
+        reguli.setBounds(50,500,200,50);
+        reguli.setText("Reguli!!");
+        reguli.setBackground(new Color(224,176,255));
+        reguli.setFont(new Font("times new roman", Font.ITALIC,30));
+        panel.add(reguli);
+
+        regula1.setBounds(50,550,350,30);
+        regula1.setText("1.Fara spatii la scrierea polinoamelor!");
+        regula1.setBackground(new Color(224,176,255));
+        regula1.setFont(new Font("times new roman", Font.ITALIC,20));
+        panel.add(regula1);
+
         panel.add(grupa);
         panel.add(nume);
         panel.add(titlu);
@@ -102,8 +114,11 @@ public class Ecran {
             poli3 = op.adunare(poli1, poli2);
             SortedMap<Integer, Float> reversedMap = new TreeMap<>(Collections.reverseOrder());
             reversedMap.putAll(poli3);
-            String x = op.afisarePolinom(reversedMap);
-            rezultat.setText(x);
+            String x = "";
+            x = op.afisarePolinom(reversedMap);
+            if(x == "")
+                rezultat.setText("0");
+            else rezultat.setText(x);
         });
         panel.add(adunare);
 
@@ -119,8 +134,11 @@ public class Ecran {
             poli3 = op.scadere(poli1, poli2);
             SortedMap<Integer, Float> reversedMap = new TreeMap<>(Collections.reverseOrder());
             reversedMap.putAll(poli3);
-            String x = op.afisarePolinom(reversedMap);
-            rezultat.setText(x);
+            String x = "";
+            x = op.afisarePolinom(reversedMap);
+            if(x == "")
+                rezultat.setText("0");
+            else rezultat.setText(x);
         });
         panel.add(scadere);
 
@@ -136,8 +154,11 @@ public class Ecran {
             poli3 = op.inmultire(poli1, poli2);
             SortedMap<Integer, Float> reversedMap = new TreeMap<>(Collections.reverseOrder());
             reversedMap.putAll(poli3);
-            String x = op.afisarePolinom(reversedMap);
-            rezultat.setText(x);
+            String x = "";
+            x = op.afisarePolinom(reversedMap);
+            if(x == "")
+                rezultat.setText("0");
+            else rezultat.setText(x);
         });
         panel.add(inmultire);
 
@@ -148,13 +169,25 @@ public class Ecran {
         panel.add(impartire);
 
         integrare.setBounds(270,320,200,50);
-        integrare.setText("Integrare polinom");
+        integrare.setText("Integrare polinom1");
         integrare.setBackground(new Color(224,176,255));
         integrare.setFont(new Font("times new roman", Font.ITALIC,20));
+        integrare.addActionListener(e->{
+            p1 = chenar1.getText();
+            poli1 = op.conversion(p1);
+            poli3 = op.integrare(poli1);
+            SortedMap<Integer, Float> reversedMap = new TreeMap<>(Collections.reverseOrder());
+            reversedMap.putAll(poli3);
+            String x = "";
+            x = op.afisarePolinom(reversedMap);
+            if(x == "")
+                rezultat.setText("0");
+            else rezultat.setText(x);
+        });
         panel.add(integrare);
 
         derivare.setBounds(50,320,200,50);
-        derivare.setText("Derivare polinom");
+        derivare.setText("Derivare polinom1");
         derivare.setBackground(new Color(224,176,255));
         derivare.setFont(new Font("times new roman", Font.ITALIC,20));
         derivare.addActionListener(e->{
@@ -163,23 +196,13 @@ public class Ecran {
             poli3 = op.derivare(poli1);
             SortedMap<Integer, Float> reversedMap = new TreeMap<>(Collections.reverseOrder());
             reversedMap.putAll(poli3);
-            String x = op.afisarePolinom(reversedMap);
-            rezultat.setText(x);
+            String x = "";
+            x = op.afisarePolinom(reversedMap);
+            if(x == "")
+                rezultat.setText("0");
+            else rezultat.setText(x);
         });
         panel.add(derivare);
-
-        reguli.setBounds(50,500,200,50);
-        reguli.setText("Reguli!!");
-        reguli.setBackground(new Color(224,176,255));
-        reguli.setFont(new Font("times new roman", Font.ITALIC,30));
-        panel.add(reguli);
-
-        regula1.setBounds(50,550,350,30);
-        regula1.setText("1.Fara spatii la scrierea polinoamelor!");
-        regula1.setBackground(new Color(224,176,255));
-        regula1.setFont(new Font("times new roman", Font.ITALIC,20));
-        panel.add(regula1);
-
     }
 
     public void textArea() {

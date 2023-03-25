@@ -1,5 +1,7 @@
 package Operatii;
 import Polinom.Polinom;
+
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -137,6 +139,19 @@ public class Operatii {
             }
         }
         return derivata;
+    }
+
+    public Map<Integer, Float> integrare (Map<Integer, Float> aux){
+        Map<Integer, Float> integrata = new HashMap<>();
+        DecimalFormat df = new DecimalFormat("#.##");
+        for(Entry<Integer, Float> a : aux.entrySet()) {
+            int exp = a.getKey() + 1;
+            double coef = a.getValue() / exp;
+            String formatare = df.format(coef);
+            coef = Float.parseFloat(formatare);
+            integrata.put(exp,  (float)coef);
+        }
+        return integrata;
     }
 
     public String afisarePolinom(SortedMap<Integer, Float> aux) {
