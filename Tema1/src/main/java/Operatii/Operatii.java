@@ -2,11 +2,8 @@ package Operatii;
 import Polinom.Polinom;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,46 +11,41 @@ public class Operatii {
 
     public Map<Integer, Float> conversion(String x) {
         Map<Integer, Float> aux = new HashMap<>();
-        Pattern pattern = Pattern.compile("([+-]?\\d*)[xX](\\^(\\d+))?|([+-]?\\d+)");
+        Pattern pattern = Pattern.compile("([+-]?\\d*)[xX](\\^(\\d+))?|([+-]?\\d+)"); //regex pentru transf din string in termeni
         Matcher matcher = pattern.matcher(x);
-        while(matcher.find()) {
-            if(matcher.group(4) != null) {
+        while(matcher.find()) { //cat timp se gasesc termeni
+            if(matcher.group(4) != null) { //in cazul in care x este la puterea 0
                 float coef = Float.parseFloat(matcher.group(4));
                 aux.put(0,coef);
             }
             else {
-                if(matcher.group(1).equals("-") || matcher.group(1).equals("")) {
+                if(matcher.group(1).equals("-") || matcher.group(1).equals("")) { //daca coeficientul este negativ
                     if(matcher.group(1).equals("-")) {
-                        if(matcher.group(2) == null) {
+                        if(matcher.group(2) == null) { //-x^1
                             aux.put(1, (float) -1);
-                        }
-                        else {
+                        } else { //-x^n
                             int exp = Integer.parseInt(matcher.group(3));
                             aux.put(exp, (float) -1);
                         }
-                    }
-                    else {
-                        if(matcher.group(2) == null) {
+                    } else {
+                        if(matcher.group(2) == null) { //x^1
                             aux.put(1, (float) 1);
-                        }
-                        else {
+                        } else { //x^n
                             int exp = Integer.parseInt(matcher.group(3));
                             aux.put(exp, (float) 1);
                         }
                     }
-                }
-                else {
+                } else {
                     try {
-                        if(matcher.group(2) == null) {
+                        if(matcher.group(2) == null) { //n*x
                             float coef = Float.parseFloat(matcher.group(1));
                             aux.put(1, coef);
-                        }
-                        else {
+                        } else { //m*x^n
                             int exp = Integer.parseInt(matcher.group(3));
                             float coef = Float.parseFloat(matcher.group(1));
                             aux.put(exp, coef);
                         }
-                    }catch (NumberFormatException e1) {
+                    }catch (NumberFormatException e1) { //nu apare 1 in fata la x
                         int exp = Integer.parseInt(matcher.group(3));
                         aux.put(exp, (float) 1);
                     }
@@ -152,6 +144,34 @@ public class Operatii {
             integrata.put(exp,  (float)coef);
         }
         return integrata;
+    }
+
+    public Map<Integer, Float> impartire (Map<Integer, Float> aux1, Map<Integer, Float> aux2)
+    {
+        Map<Integer, Float> cat = new HashMap<>();
+        Map<Integer, Float> rest = new HashMap<>(aux1);
+        int grad1 = Collections.max(aux1.keySet()); //gradul maxim din polinomul 1
+        int grad2 = Collections.max(aux2.keySet()); //gradul maxim din polinomul 2
+        if(grad1 < grad2) //in caz ca al doilea are grad mai mare nu se poate face impartirea
+            aux1 = null;
+        while (grad1 >= grad2 && !rest.isEmpty()){ //impartim termen cu termen polinoamele
+            float coef = rest.get(grad1) / aux2.get(grad2); //coeficientul catului
+            int grad = grad1 - grad2; //gradul rezultat in cat
+            cat.put(grad,coef); //punem in cat rezultatul intreg
+
+            for(int i = grad2; i >= 0; i--){ //actualizam coeficientii pentru a putea calcula urm. termen al impartirii
+                float coef1 = rest.containsKey(i + grad) ? rest.get(i + grad) : 0;
+                float coef2 = aux2.containsKey(i) ? aux2.get(i) : 0;
+                float coef3 = coef1 - coef2 * coef;
+                if(coef3 == 0){ //se elimina termenii cu coeficientii = 0
+                    rest.remove(i + grad);
+                } else {
+                    rest.put(i + grad, coef3);
+                }
+            }
+            grad1 = Collections.max(rest.keySet());
+        }
+        return cat;
     }
 
     public String afisarePolinom(SortedMap<Integer, Float> aux) {

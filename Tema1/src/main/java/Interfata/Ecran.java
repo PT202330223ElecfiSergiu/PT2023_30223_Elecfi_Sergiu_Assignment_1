@@ -166,6 +166,24 @@ public class Ecran {
         impartire.setText("Impartire polinoame");
         impartire.setBackground(new Color(224,176,255));
         impartire.setFont(new Font("times new roman", Font.ITALIC,20));
+        impartire.addActionListener(e->{
+            p1 = chenar1.getText();
+            p2 = chenar2.getText();
+            poli1 = op.conversion(p1);
+            poli2 = op.conversion(p2);
+            poli3 = op.impartire(poli1, poli2);
+            String x = "";
+            if (poli3 != null) {
+                SortedMap<Integer, Float> reversedMap = new TreeMap<>(Collections.reverseOrder());
+                reversedMap.putAll(poli3);
+                x = op.afisarePolinom(reversedMap);
+            }
+            if(poli3 == null)
+                rezultat.setText("Nu se poate face impartirea");
+            else if(x == "")
+                    rezultat.setText("0");
+                else rezultat.setText(x);
+        });
         panel.add(impartire);
 
         integrare.setBounds(270,320,200,50);

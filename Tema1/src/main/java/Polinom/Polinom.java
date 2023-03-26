@@ -39,23 +39,18 @@ public class Polinom {
             if(coeficient == 1.0 || coeficient == -1.0) {
                 x = "x";
                 return x;
-            }
-            else
-            {
+            } else {
                 if(coeficient < 0)
                     x = String.valueOf(coeficient * (-1)) +"x";
                 else
                     x = String.valueOf(coeficient) + "x";
                 return x;
             }
-        }
-        else {
+        } else {
             if(coeficient == 1.00 || coeficient == -1.00) {
                 x = "x^" + String.valueOf(exponent);
                 return x;
-            }
-            else
-            {
+            } else {
                 if(coeficient < 0)
                     x = String.valueOf(coeficient * (-1)) + "x^" + String.valueOf(exponent);
                 else
