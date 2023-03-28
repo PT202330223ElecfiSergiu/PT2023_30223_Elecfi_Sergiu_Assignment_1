@@ -32,6 +32,7 @@ public class Ecran {
     JLabel grupa = new JLabel();
     JLabel reguli = new JLabel();
     JLabel regula1 = new JLabel();
+    JLabel regula2 = new JLabel();
 
     JPanel panel = new JPanel();
 
@@ -81,6 +82,12 @@ public class Ecran {
         regula1.setBackground(new Color(224,176,255));
         regula1.setFont(new Font("times new roman", Font.ITALIC,20));
         panel.add(regula1);
+
+        regula2.setBounds(50,590,450,30);
+        regula2.setText("2.Nu se pune semnul '*' intre coeficienti si 'x'");
+        regula2.setBackground(new Color(224,176,255));
+        regula2.setFont(new Font("times new roman", Font.ITALIC,20));
+        panel.add(regula2);
 
         panel.add(grupa);
         panel.add(nume);
@@ -243,6 +250,7 @@ public class Ecran {
         butoane();
         textArea();
         frame.add(panel);
+        frame.setResizable(false);
         frame.setVisible(true);
 
     }

@@ -19,7 +19,7 @@ public class Operatii {
                 aux.put(0,coef);
             }
             else {
-                if(matcher.group(1).equals("-") || matcher.group(1).equals("")) { //daca coeficientul este negativ
+                if(matcher.group(1).equals("") || matcher.group(1).equals("-")) { //daca coeficientul este negativ
                     if(matcher.group(1).equals("-")) {
                         if(matcher.group(2) == null) { //-x^1
                             aux.put(1, (float) -1);
@@ -36,7 +36,6 @@ public class Operatii {
                         }
                     }
                 } else {
-                    try {
                         if(matcher.group(2) == null) { //n*x
                             float coef = Float.parseFloat(matcher.group(1));
                             aux.put(1, coef);
@@ -45,10 +44,6 @@ public class Operatii {
                             float coef = Float.parseFloat(matcher.group(1));
                             aux.put(exp, coef);
                         }
-                    }catch (NumberFormatException e1) { //nu apare 1 in fata la x
-                        int exp = Integer.parseInt(matcher.group(3));
-                        aux.put(exp, (float) 1);
-                    }
                 }
             }
         }
@@ -56,12 +51,7 @@ public class Operatii {
     }
 
     public Map<Integer, Float> adunare(Map<Integer, Float> aux1, Map<Integer, Float> aux2){
-        Map<Integer, Float> suma = new HashMap<>();
-        for (Map.Entry<Integer, Float> a : aux1.entrySet()) {
-            int expo = a.getKey();
-            float coef = a.getValue();
-            suma.put(expo, coef);
-        }
+        Map<Integer, Float> suma = new HashMap<>(aux1);
 
         for (Map.Entry<Integer, Float> a : aux2.entrySet()) {
             int expo = a.getKey();
@@ -76,13 +66,7 @@ public class Operatii {
     }
 
     public Map<Integer, Float> scadere(Map<Integer, Float> aux1, Map<Integer, Float> aux2){
-        Map<Integer, Float> diferenta = new HashMap<>();
-
-        for (Map.Entry<Integer, Float> a : aux1.entrySet()) {
-            int expo = a.getKey();
-            float coef = a.getValue();
-            diferenta.put(expo, coef);
-        }
+        Map<Integer, Float> diferenta = new HashMap<>(aux1);
 
         for (Map.Entry<Integer, Float> a : aux2.entrySet()) {
             int expo = a.getKey();
@@ -107,13 +91,13 @@ public class Operatii {
                 int exp2 = b.getKey();
                 float coef2 = b.getValue();
 
-                int exp = exp1 + exp2;
-                float coef = coef1 * coef2;
+                int expf = exp1 + exp2;
+                float coeff = coef1 * coef2;
 
-                if (produs.containsKey(exp)) {
-                    produs.put(exp, produs.get(exp) + coef);
+                if (produs.containsKey(expf)) {
+                    produs.put(expf, produs.get(expf) + coeff);
                 } else {
-                    produs.put(exp, coef);
+                    produs.put(expf, coeff);
                 }
             }
         }
@@ -149,27 +133,31 @@ public class Operatii {
     public Map<Integer, Float> impartire (Map<Integer, Float> aux1, Map<Integer, Float> aux2)
     {
         Map<Integer, Float> cat = new HashMap<>();
-        Map<Integer, Float> rest = new HashMap<>(aux1);
         int grad1 = Collections.max(aux1.keySet()); //gradul maxim din polinomul 1
         int grad2 = Collections.max(aux2.keySet()); //gradul maxim din polinomul 2
+        if(grad1 == 0 || grad2 ==0)
+        {
+            cat.put(0,(float) 0);
+            return cat;
+        }
         if(grad1 < grad2) //in caz ca al doilea are grad mai mare nu se poate face impartirea
-            aux1 = null;
-        while (grad1 >= grad2 && !rest.isEmpty()){ //impartim termen cu termen polinoamele
-            float coef = rest.get(grad1) / aux2.get(grad2); //coeficientul catului
+            return null;
+        while (grad1 >= grad2 && !aux1.isEmpty()){ //impartim termen cu termen polinoamele
+            float coef = aux1.get(grad1) / aux2.get(grad2); //coeficientul catului
             int grad = grad1 - grad2; //gradul rezultat in cat
             cat.put(grad,coef); //punem in cat rezultatul intreg
 
             for(int i = grad2; i >= 0; i--){ //actualizam coeficientii pentru a putea calcula urm. termen al impartirii
-                float coef1 = rest.containsKey(i + grad) ? rest.get(i + grad) : 0;
+                float coef1 = aux1.containsKey(i + grad) ? aux1.get(i + grad) : 0;
                 float coef2 = aux2.containsKey(i) ? aux2.get(i) : 0;
                 float coef3 = coef1 - coef2 * coef;
                 if(coef3 == 0){ //se elimina termenii cu coeficientii = 0
-                    rest.remove(i + grad);
+                    aux1.remove(i + grad);
                 } else {
-                    rest.put(i + grad, coef3);
+                    aux1.put(i + grad, coef3);
                 }
             }
-            grad1 = Collections.max(rest.keySet());
+            grad1 = Collections.max(aux1.keySet());
         }
         return cat;
     }
