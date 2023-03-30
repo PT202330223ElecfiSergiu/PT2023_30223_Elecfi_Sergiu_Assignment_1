@@ -35,15 +35,19 @@ public class Operatii {
                             aux.put(exp, (float) 1);
                         }
                     }
-                } else {
-                        if(matcher.group(2) == null) { //n*x
-                            float coef = Float.parseFloat(matcher.group(1));
-                            aux.put(1, coef);
-                        } else { //m*x^n
-                            int exp = Integer.parseInt(matcher.group(3));
-                            float coef = Float.parseFloat(matcher.group(1));
-                            aux.put(exp, coef);
-                        }
+                } else try {
+                    if(matcher.group(2) == null) { //m*x
+                        float coef = Float.parseFloat(matcher.group(1));
+                        aux.put(1, coef);
+                    }
+                    else { //m*x^n
+                        int exp = Integer.parseInt(matcher.group(3));
+                        float coef = Float.parseFloat(matcher.group(1));
+                        aux.put(exp, coef);
+                    }
+                }catch (NumberFormatException e1) { //cand nu se poate face convertirea de la string la float la coeficient
+                    int exp = Integer.parseInt(matcher.group(3));
+                    aux.put(exp, (float) 1);
                 }
             }
         }
