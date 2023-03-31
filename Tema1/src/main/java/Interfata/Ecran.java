@@ -207,7 +207,10 @@ public class Ecran {
             x = op.afisarePolinom(reversedMap);
             if(x == "")
                 rezultat.setText("0");
-            else rezultat.setText(x);
+            else {
+                x=x+"+C";
+                rezultat.setText(x);
+            }
         });
         panel.add(integrare);
 
